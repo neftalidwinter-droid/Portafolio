@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Robot · Odometría Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/odom.css">
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="logo">Robot<em>.</em>Odom</div>
+  <div class="header-tag">ODOMETRÍA DIFERENCIAL</div>
+  <div class="header-sep"></div>
+  <div class="live-pill"><span class="live-dot"></span>LIVE</div>
+</header>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+
+  <!-- ══ PANEL IZQUIERDO ══ -->
+  <div class="panel left">
+
+    <!-- Módulo: Ruedas -->
+    <div class="module">
+      <div class="mod-title">// ruedas</div>
+
+      <!-- Rueda Izquierda (gira antihorario) -->
+      <div class="wheel-row">
+        <div class="wheel-tag l">IZQ</div>
+        <svg class="wheel-svg" viewBox="-53 -53 106 106">
+          <circle class="t-outer" r="43"/>
+          <circle class="t-tread" r="43"/>
+          <circle class="t-wall"  r="37"/>
+          <!-- Anillo de progreso -->
+          <circle class="p-ring" r="35" transform="rotate(-90)"/>
+          <circle id="arcL" class="p-arc" r="35"
+            stroke="var(--accent)"
+            stroke-dasharray="219.9"
+            stroke-dashoffset="219.9"
+            transform="scale(-1,1) rotate(-90)"/>
+          <!-- Llanta (rota antihorario) -->
+          <g id="rimL">
+            <circle class="rim" r="28"/>
+            <line class="spoke" x1="0" y1="-25" x2="0" y2="25"/>
+            <line class="spoke" x1="-25" y1="0" x2="25" y2="0"/>
+            <line class="spoke" x1="-17.7" y1="-17.7" x2="17.7" y2="17.7"/>
+            <line class="spoke" x1="17.7"  y1="-17.7" x2="-17.7" y2="17.7"/>
+          </g>
+          <circle class="hub" r="7" stroke="var(--accent)"/>
+          <circle r="2.2" fill="var(--accent)"/>
+        </svg>
+        <div class="wheel-data">
+          <div class="w-bar-bg"><div class="w-bar-fill l" id="barL"></div></div>
+          <div class="w-ticks" id="tL">0 <span>ticks</span></div>
+          <div class="w-revs" id="revL">0 vueltas</div>
+        </div>
+      </div>
+
+      <!-- Rueda Derecha (gira horario) -->
+      <div class="wheel-row">
+        <div class="wheel-tag r">DER</div>
+        <svg class="wheel-svg" viewBox="-53 -53 106 106">
+          <circle class="t-outer" r="43"/>
+          <circle class="t-tread" r="43"/>
+          <circle class="t-wall"  r="37"/>
+          <circle class="p-ring" r="35" transform="rotate(-90)"/>
+          <circle id="arcR" class="p-arc" r="35"
+            stroke="var(--accent2)"
+            stroke-dasharray="219.9"
+            stroke-dashoffset="219.9"
+            transform="rotate(-90)"/>
+          <!-- Llanta (rota horario) -->
+          <g id="rimR">
+            <circle class="rim" r="28"/>
+            <line class="spoke" x1="0" y1="-25" x2="0" y2="25"/>
+            <line class="spoke" x1="-25" y1="0" x2="25" y2="0"/>
+            <line class="spoke" x1="-17.7" y1="-17.7" x2="17.7" y2="17.7"/>
+            <line class="spoke" x1="17.7"  y1="-17.7" x2="-17.7" y2="17.7"/>
+          </g>
+          <circle class="hub" r="7" stroke="var(--accent2)"/>
+          <circle r="2.2" fill="var(--accent2)"/>
+        </svg>
+        <div class="wheel-data">
+          <div class="w-bar-bg"><div class="w-bar-fill r" id="barR"></div></div>
+          <div class="w-ticks" id="tR">0 <span>ticks</span></div>
+          <div class="w-revs" id="revR">0 vueltas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Módulo: Recorrido -->
+    <div class="module">
+      <div class="mod-title">// recorrido por rueda</div>
+      <div class="dist-cards">
+        <div class="dist-card">
+          <div class="d-label l">IZQ</div>
+          <div class="d-val" id="cmL">0.00<span class="d-unit"> cm</span></div>
+          <div class="d-ticks" id="dtL">0 ticks</div>
+        </div>
+        <div class="dist-card">
+          <div class="d-label r">DER</div>
+          <div class="d-val" id="cmR">0.00<span class="d-unit"> cm</span></div>
+          <div class="d-ticks" id="dtR">0 ticks</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-spacer"></div>
+    <div class="panel-foot">
+      Ticks / vuelta ·· 1 450<br>
+      Diámetro ········ 140 mm<br>
+      Circunf. ········ 439.82 mm<br>
+      cm / tick ······· 0.03033<br>
+      Ancho de eje ···· 20 cm
+    </div>
+  </div>
+
+  <!-- ══ MAPA (robot siempre al centro) ══ -->
+  <div class="map-area">
+    <canvas id="mapCanvas"></canvas>
+    <div class="map-lbl" id="ml-x">X →</div>
+    <div class="map-lbl" id="ml-y">↑ Y</div>
+    <!-- Controles de zoom -->
+    <div class="zoom-buttons">
+      <button class="btn-zoom-out" id="btn-zoom-out" title="Alejar">−</button>
+      <button class="btn-zoom-rst" id="btn-zoom-rst" title="Zoom original">RST</button>
+      <button class="btn-zoom-in" id="btn-zoom-in" title="Acercar">+</button>
+      <span id="ml-scale">—</span>
+    </div>
+  </div>
+
+  <!-- ══ PANEL DERECHO ══ -->
+  <div class="panel right">
+
+    <!-- Módulo: Posición -->
+    <div class="module">
+      <div class="mod-title">// posición</div>
+      <div class="pose-grid">
+        <div class="pose-item">
+          <div class="pose-lbl">X POSITION</div>
+          <div class="pose-val x" id="valX">0.00<span class="pose-unit"> cm</span></div>
+        </div>
+        <div class="pose-item">
+          <div class="pose-lbl">Y POSITION</div>
+          <div class="pose-val y" id="valY">0.00<span class="pose-unit"> cm</span></div>
+        </div>
+        <div class="pose-item">
+          <div class="pose-lbl">THETA</div>
+          <div class="pose-val t" id="valT">0.0000<span class="pose-unit"> rad</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Módulo: Velocidad -->
+    <div class="module">
+      <div class="mod-title">// velocidad</div>
+      <div class="vel-grid">
+        <div class="vel-item">
+          <div class="vel-lbl">V LINEAL</div>
+          <div class="vel-val" id="valV">0.00<span class="vel-unit"> cm/s</span></div>
+          <div class="vel-sub" id="subV">DETENIDO</div>
+        </div>
+        <div class="vel-item">
+          <div class="vel-lbl">ω ANGULAR</div>
+          <div class="vel-val omega" id="valW">0.0000<span class="vel-unit"> rad/s</span></div>
+          <div class="vel-sub" id="subW">RECTO</div>
+        </div>
+      </div>
+      <!-- Velocidades individuales por rueda -->
+      <div style="margin-top:13px;border-top:1px solid var(--border);padding-top:11px;display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+        <div>
+          <div class="vel-lbl" style="color:var(--accent);">V IZQ</div>
+          <div class="vel-val" id="valVL" style="font-size:1rem;color:var(--accent);">0.00<span class="vel-unit"> cm/s</span></div>
+        </div>
+        <div>
+          <div class="vel-lbl" style="color:var(--accent2);">V DER</div>
+          <div class="vel-val" id="valVR" style="font-size:1rem;color:var(--accent2);">0.00<span class="vel-unit"> cm/s</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-spacer"></div>
+    <div class="panel-foot">
+      Actualización ·· 100 ms<br>
+      Ventana vel. ···· 500 ms<br>
+      Rastro máx. ···· 3 000 pts<br>
+      Zoom: rueda / + −<br>
+      Fórmula: d=(dL+dR)/2<br>
+      dθ=(dR−dL)/L
+    </div>
+  </div>
+
+</div><!-- .main -->
+
+<script src="js/odom.js"></script>
+</body>
+</html>
