@@ -7,6 +7,10 @@ ESLint Yes
 
 npm install Yes
 
+cd estacion-meteorologica
+
+npm install bootstrap
+
 En la carpeta /public agregar la carpeta de este repositorio /img con las imagenes que contiene.
 
 En la carpeta /src borrar App.css, sustituir los archivos base App.jsx y main.jsx por los que aparecen en este repositorio.
