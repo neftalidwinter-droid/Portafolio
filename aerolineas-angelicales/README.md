@@ -2,7 +2,9 @@ Simulador de compra de boletos de una aerolínea que sale de Monterrey, N. L., c
 
 Inicializar el proyecto:
 npm create vite@latest aerolineas-angelicales -- --template react
+
 ESLint Yes
+
 npm install Yes
 
 En la carpeta /src sustituir los archivos base App.jsx y App.css por los que aparecen en este repositorio.
