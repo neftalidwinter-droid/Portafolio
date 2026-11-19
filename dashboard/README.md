@@ -3,7 +3,7 @@ Dashboard usando Angular
 Inicializar el proyecto:
 npm install -g @angular/cli
 
-ng new dashboard-angular --style=css --ssr=false
+ng new dashboard --style=css --ssr=false
 
 cd dashboard-angular
 
