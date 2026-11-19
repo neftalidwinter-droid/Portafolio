@@ -1,0 +1,23 @@
+:root {
+--bg: #eeeeee;
+--card: #ffffff;
+--text: #3c4858;
+--muted: #999999;
+--red: #f44336;
+--orange: #ff9800;
+--green: #4caf50;
+--cyan: #00bcd4;
+--purple: #9c27b0;
+--sidebar-w: 260px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.material-icons { vertical-align: middle; }
