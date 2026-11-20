@@ -1,0 +1,4 @@
+.hecha a { text-decoration: line-through; color: gray; }
+.resaltada { background-color: yellow; }
+li { margin: 0.4rem 0; list-style: none; }
+a { color: inherit; margin: 0 0.5rem; }

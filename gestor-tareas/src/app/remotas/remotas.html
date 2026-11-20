@@ -1,0 +1,26 @@
+<h2>Tareas remotas</h2>
+
+<p>Mostrando {{ limite() }} tareas</p>
+<button (click)="masTareas()">Cargar 1 más</button>
+
+@if (remotas.isLoading()) {
+  <p>Cargando...</p>
+}
+
+@if (remotas.error()) {
+  <p>No se pudo cargar la información.</p>
+  <button (click)="remotas.reload()">Reintentar</button>
+}
+
+@if (remotas.hasValue()) {
+  <ul>
+    @for (r of remotas.value(); track r.id) {
+      <li>
+        {{ r.completed ? '✔' : '○' }} {{ r.title }}
+        <button (click)="copiar(r)" [disabled]="yaCopiada(r)">
+          {{ yaCopiada(r) ? 'Copiada' : 'Copiar a mis tareas' }}
+        </button>
+      </li>
+    }
+  </ul>
+}

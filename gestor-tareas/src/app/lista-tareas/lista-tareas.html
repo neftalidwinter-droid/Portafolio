@@ -1,0 +1,34 @@
+<form (submit)="agregar($event)">
+  <input [formField]="nuevaForm.texto" placeholder="Nueva tarea y Enter" />
+  <button type="submit">Agregar</button>
+
+  @if (nuevaForm.texto().touched() && nuevaForm.texto().invalid()) {
+    @for (error of nuevaForm.texto().errors(); track error.kind) {
+      <p class="error">{{ error.message }}</p>
+    }
+  }
+</form>
+
+<div class="filtros">
+  @for (f of filtros; track f) {
+    <button (click)="filtro.set(f)" [class.activo]="filtro() === f">
+      {{ f }}
+    </button>
+  }
+</div>
+
+@if (total() > 0) {
+  <p>Pendientes: {{ pendientes() }} de {{ total() }}</p>
+}
+
+<ul>
+  @for (t of tareasFiltradas(); track t.id) {
+    <app-tarea-item
+      [tarea]="t"
+      [resaltar]="$first"
+      (alternada)="alternar($event)"
+      (eliminada)="eliminar($event)" />
+  } @empty {
+    <li>No hay tareas en esta vista.</li>
+  }
+</ul>

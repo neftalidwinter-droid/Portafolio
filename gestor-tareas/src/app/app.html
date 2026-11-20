@@ -1,0 +1,9 @@
+<h1>{{ titulo() }}</h1>
+
+<nav>
+  <a routerLink="/" routerLinkActive="activo" [routerLinkActiveOptions]="{ exact: true }">Tareas</a>
+  <a routerLink="/acerca" routerLinkActive="activo">Acerca de</a>
+  <a routerLink="/remotas" routerLinkActive="activo">Remotas</a>
+</nav>
+
+<router-outlet />

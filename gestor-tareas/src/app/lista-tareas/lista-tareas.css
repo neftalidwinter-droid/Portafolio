@@ -1,0 +1,6 @@
+ul { list-style: none; padding: 0; }
+.error { color: crimson; margin: 0.25rem 0; }
+.filtros { margin: 0.75rem 0; }
+.filtros button { margin-right: 0.5rem; text-transform: capitalize; }
+.filtros button.activo { font-weight: bold; background: #333; color: white; }
+input.ng-invalid.ng-touched { border-color: crimson; }

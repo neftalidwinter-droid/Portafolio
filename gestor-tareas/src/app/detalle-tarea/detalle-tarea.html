@@ -1,0 +1,13 @@
+@if (tarea(); as t) {
+  <h2>Tarea #{{ t.id }}</h2>
+  <p><strong>Texto:</strong> {{ t.texto }}</p>
+  <p><strong>Estado:</strong> {{ t.hecha ? 'Hecha ✔' : 'Pendiente ○' }}</p>
+  <button (click)="alternar()">
+    {{ t.hecha ? 'Marcar como pendiente' : 'Marcar como hecha' }}
+  </button>
+} @else {
+  <h2>Tarea no encontrada</h2>
+  <p>No existe una tarea con id {{ id() }}.</p>
+}
+
+<p><a routerLink="/">← Volver a la lista</a></p>
